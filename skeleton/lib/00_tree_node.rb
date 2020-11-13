@@ -10,11 +10,11 @@ class PolyTreeNode
     end
 
     def parent=(dad)
-        self.parent.children.delete(self) if !self.parent.nil?
+        self.parent.children.delete(self) if !self.parent.nil?    
         @parent = dad
         dad.children << self unless dad.nil?   
     end   
-
+                                                  
     def add_child(child)
         child.parent = self
     end 
@@ -43,7 +43,7 @@ class PolyTreeNode
             if el.value == target
                 return el
             else
-                el.children.each {|child| queue << child }
+                el.children.each { |child| queue << child }
             end
         end
         nil
