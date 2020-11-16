@@ -1,10 +1,12 @@
+require "byebug"
+
 require_relative "00_tree_node.rb"
 
 class KnightPathFinder 
 
     attr_reader :root_node
 
-    MOVE =[
+    MOVES =[
         [ 2,  1],
         [ 2, -1],
         [-2,  1],
@@ -18,28 +20,48 @@ class KnightPathFinder
     def initialize(pos)
         @pos = pos
         @root_node = PolyTreeNode.new(pos)
-        self.build_move_tree
+        # self.build_move_tree
         @considered_positions = [pos]
     end
 
-    def build_move_tree
-        @root_node
-    end
+    # def build_move_tree # remove first move position
+    #     @root_node
+    #     current_pos = []
+    #     new_move_positions(current_pos).each do |next_pos|
 
-    
-    def self.valid_moves(pos)
-        moves = []
-        x, y = pos
-        MOVES.each do |x1, y1|
-            new_pos = [x + x1, y + y1]
-            
-            new_pos.each do |ele|  # ele = [x,y]
-                #check to make sure ele is >=0 and <=7
+    #     end
+        
+    # end
 
+    def new_move_positions(pos)
+        new_move_pos = []
+        valid_move = KnightPathFinder.valid_moves(pos)
+        valid_move.each do |move|
+            if !@considered_positions.include?(move)
+                new_move_pos << move
+                @considered_positions << move  
             end
         end
+        new_move_pos           
+    end
+
+    def self.valid_moves(pos)
+        valid_moves = []
+        x, y = pos
+        MOVES.each do |move|   
+            if (x + move[0]) >= 0 && (x + move[0]) <= 7
+                 new_x = x + move[0]
+                if (y + move[1]) >= 0 && (y + move[1]) <= 7
+                    new_y = y + move[1]
+                    valid_moves << [new_x, new_y]
+                end
+            end
+        end
+        valid_moves
     end
 end
 
-first_move = KnightPathFinder.new([5,0])
-first_move.render
+first_move = KnightPathFinder.new([0,0])
+# p KnightPathFinder.valid_moves([0, 0])
+
+p first_move.new_move_positions([0, 0])
